@@ -1,0 +1,121 @@
+{% load thumbnail %}
+<nav class="my-pure-nav navbar navbar-expand-lg navbar-dark bg-dark text-right fixed-top" style="margin-bottom:150px;background:linear-gradient(315deg, #537895 0%, #09203f 74%);">
+    <a class="navbar-brand  ml-3" href="/">Benevis</a>
+    <button class="navbar-toggler aside-menu-mine" type="button">
+      <span class="navbar-toggler-icon"></span>
+    </button>  
+    <div class="collapse navbar-collapse justify-content-between" id="navbarSupportedContent">
+      <ul class="navbar-nav">
+        <li class="nav-item home-link active">
+          <a class="nav-link" href="{% url 'core:home' %}">اکسپلور</a>
+        </li>
+        {% if request.user.is_authenticated %}
+          <li class="nav-item  dashboard-link mr-2 ">
+            <a class="nav-link" href="{% url 'accounts:dashboard' request.user.username %}">داشبورد</a>
+          </li>
+          <li class="nav-item friends-link mr-2 ">
+            <a class="nav-link" href="{% url 'twitte:friendsTwittes' %}">دوستان</a>
+          </li>
+        {% endif %}
+      </ul>
+      <ul class="navbar-nav">
+        {% if request.user.is_authenticated %} 
+          <button class="btn btn-primary" data-toggle="modal" data-target="#new-search-modal">جست و جو  </button>   
+  
+          <li class="nav-item mr-2 ">
+            <a class="nav-link btn btn-outline-danger text-white" href="{% url 'accounts:logout' %}">خروج</a>
+          </li>
+        {% else %}
+          <li class="nav-item mr-2 ">
+            <a class="nav-link btn btn-outline-info text-white" href="{% url 'accounts:login' %}">ورود</a>
+          </li>
+        {% endif %}
+      </ul>
+    </div>
+</nav>
+<!-- modal -->
+<div class="modal fade" id="new-search-modal" tabindex="-1" role="dialog" aria-labelledby="new-search-modal" aria-hidden="true" style="z-index:99999;">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="">جست و جو کاربران</h5>
+        <button type="button"  style="position: absolute;left: 5px;" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body text-right">
+          <form id="searchQueryForm" action="{% url 'accounts:searchQuery' %}">
+            {% csrf_token %}
+            <input id="Query" type="text" class="form-control" name="Query">
+          </form>
+          <div class="result">
+            <ul style="direction: ltr;text-align: left;list-style-type: none;">
+              
+            </ul>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<nav class="small-device-nav d-block d-xl-none">
+  <div class="my-nav-wrapper">
+    <header>
+      <div class="close-nav">
+        <i class="fa fa-times"></i>
+      </div>
+      <div class="title">
+        Benevis
+      </div>
+      <hr>
+      {% if request.user.is_authenticated %}
+      <div class="avatar">
+        {% thumbnail request.user.profile.avatar "300x300" crop="center" as img %}
+            <img src="{{ img.url }}" loading="lazy" title="avatar" width="100%" height="100%">
+        {% endthumbnail %}
+      </div>
+      {% endif %}
+    </header>
+    <main>
+      <ul>
+        <li>
+          <a href="/">خانه</a>
+          <i class="fa fa-home"></i>
+        </li>
+        {% if request.user.is_authenticated %}
+        <li>
+          <a href="{% url 'accounts:dashboard' request.user.username %}">داشبورد</a>
+          <i class="fa fa-user"></i>
+        </li>
+        <li>
+          <a href="{% url 'twitte:friendsTwittes' %}">دوستان</a>
+          <i class="fa fa-users"></i>
+        </li>
+        <li>
+          <a href="" data-toggle="modal" data-target="#new-search-modal">جست و جو</a>
+          <i class="fa fa-search"></i>
+        </li>  
+        <li>
+          <a href="{% url 'accounts:logout' %}">خروج</a>
+          <i class="fas fa-sign-out-alt"></i>
+        </li>  
+        {% else %}
+        <li>
+          <a href="{% url 'accounts:login' %}">ورود</a>
+          <i class="fas fa-sign-in-alt"></i>
+        </li>
+        {% endif %}              
+      </ul>
+    </main>
+  </div>
+</nav>
+
+<script>
+  $(".aside-menu-mine, .close-nav").on("click", function(event){
+    event.preventDefault();
+    $(".small-device-nav").toggleClass("make-right-0");
+    $("body").toggleClass("make-body-none");
+    
+  });
+
+</script>

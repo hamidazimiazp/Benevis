@@ -1,0 +1,187 @@
+body{
+    background-color: #f8f9d2;
+    background-image: linear-gradient(315deg, #f8f9d2 0%, #e8dbfc 74%); 
+    background-size: cover;
+    display: flex;
+    justify-content : center;
+    align-items : center;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.my-container-form{
+    background-color : #fff;
+    border-radius: 4px;
+    box-shadow : 0 0 5px -2px #000;
+    position : relative;
+    overflow : hidden;
+    width : 768px;
+    max-width : 100%;
+    min-height : 600px;
+    direction : ltr;
+}
+.form-container{
+    position : absolute;
+    top : 0;
+    height: 100%;
+    transition: all 0.5s ease-in-out;
+}
+.sign-in-container{
+    left: 0;
+    width : 50%;
+    z-index : 2;
+}
+.social-container a{
+    border : 1px solid red;
+    border-radius: 3px;
+    width : 120px;
+    margin: 0 5px;
+    padding : 10px;
+    display : block;
+    text-align  : center;
+    transition: all 0.3s ease-in-out;
+}
+.social-container a:hover{
+    background-color : red;
+    color : #fff;
+}
+input.zp_, button{
+    cursor: pointer;
+}
+.my-container-form h1{
+    font-size : 16px;
+}
+.my-container-form p{   
+    font-size : 14px;
+    line-height : 26px
+}
+.my-container-form span{
+    font-size : 12px;
+}
+.my-container-form a{
+    color: #333;
+    font-size : 14px;
+    margin: 15px 0;
+    text-decoration: none;
+}
+.my-container-form button{
+    border-radius: 5px;
+    border : 1px solid #dcdcdc;
+    background-color: #3d98db;
+    font-size: 12px;
+    padding : 12px 45px; 
+    color : #fff;
+    transition : transparent 80ms ease-in;
+}
+.my-container-form button.btn-reg{
+    background-color : #27ae60;
+    margin-top: 20px;
+}
+.my-container-form button{
+    transform: scale(0.9);
+}
+.my-container-form button:focus{
+    outline: none;
+}
+.my-container-form button.ghost{
+    background-color: transparent;
+    border-color: #fff;
+}
+
+.my-container-form form{
+    background-color: #fff;
+    display : flex;
+    align-items: center;
+    justify-content : center;
+    flex-direction: column;
+    padding : 0 50px;
+    height: 100%;
+    text-align : right;
+}
+.my-container-form input{
+    background-color : #eee;
+    border: none;
+    padding : 12px 15px;
+    margin: 8px 0;
+    width : 100%;
+    direction : rtl;
+}
+label{
+    direction : rtl;
+}
+.sign-up-container{
+    left: 0;
+    width : 50%;
+    z-index : 1;
+    opacity: 0;
+}
+.overlay-container{
+    position : absolute;
+    top : 0;
+    left : 50%;
+    width: 50%;
+    height: 100%;
+    overflow: hidden;
+    transition : transform .6s ease-in-out;
+    z-index  : 3;
+}
+.overlay-container .overlay{
+    background-color: #537895;
+    background-image: linear-gradient(315deg, #537895 0%, #09203f 74%);
+    height: 100%;
+    width : 200%;
+    position: relative;
+    left : -100%;
+    transform : translateX(0);
+    transition: transform 0.5s ease-out;
+}
+.overlay-container .overlay .overlay-left{
+    transform : translateX(-10%);
+}
+.overlay-container .overlay .overlay-right{
+    transform : translateX(-10%);
+    right : 0;
+}
+.overlay-panel{
+    position : absolute;
+    top : 0;
+    display : flex;
+    justify-content : center;
+    align-items : center;
+    flex-direction: column;
+    text-align : center;
+    height : 100%;
+    width : 50%;
+    transform : translateX(0);
+    transition: transform 0.6s ease-in-out;
+    color: #fff;
+    padding-left: 10%;
+}
+.overlay-panel button{
+    color : #fff;
+    margin-top: 45px;
+}
+button.ghost:hover{
+    background-color : #fff;
+    color : #ff445f;
+    margin-top: 45px;
+}
+.right-panel-active .overlay-container{
+    transform : translateX(-100%);
+}
+.right-panel-active .sign-in-container{
+    transform : translateX(100%);
+}
+.right-panel-active .overlay{
+    transform : translateX(50%);
+}
+
+form p {
+    line-height : 0 !important;
+}
+
+/* recaptcha responsive */
+.g-recaptcha {
+    transform:scale(0.77);
+    -webkit-transform:scale(0.77); 
+}

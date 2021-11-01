@@ -1,0 +1,336 @@
+{% extends "parent/parent.html" %}
+{% load static %}
+{% load thumbnail %}
+{% load basefilter %}
+{% block title %}Dashboard{% endblock title %}
+
+{% block body %}
+
+<div class="progres-cover">
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            <div class="col-8">
+                <div class="content" style="direction: left;">
+                    <h2 id="progress-title" >در حال بروز رسانی حساب کاربری</h2>
+                    <div class="progress" id="progressBox">
+                        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 0">
+                            0%
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container mt-5 mb-5">
+    <div class="row justify-content-between">
+        <div class="col-12 col-lg-12">
+            <div class="content text-center">
+                <header style="direction: ltr;display: flex;justify-content: space-around;">
+                    <h1 class="dashboard-title" style="color : #343a40;font-style: italic;display:inline">{{ user.username }}</h1>
+                    {% if request.user.username == user.username %}
+                    <button type="button" data-toggle="modal" data-target="#changeProfile" style="vertical-align: 7px;margin-left: 93px;" class="btn btn-outline-primary edit-profile">
+                        ویرایش پروفایل
+                    </button>
+                    {% else %}
+                        {% if is_following %}
+                            <a id="AJfollowing-btn" data-id="{{ user.id }}" data-value="unfollow" style="vertical-align: 7px;margin-left: 93px;height: 40px;margin-top: 11px;" class="btn btn-danger edit-profile text-white">
+                                لغو دنبال کردن                           
+                            </a>
+                        {% else %}
+                            <a id="AJfollowing-btn" data-id="{{ user.id }}" data-value="follow" style="vertical-align: 7px;margin-left: 93px;height: 40px;margin-top: 11px;" class="btn btn-primary edit-profile text-white">
+                                دنبال کردن 
+                            </a>
+                        {% endif %}
+                    {% endif %}     
+                </header>        
+                <hr>
+                <div style="direction: ltr;" class="position-relative">
+                    <div class="avatar-card">
+                        {% thumbnail user.profile.avatar "100x100" crop="center" as img %}
+                            <img src="{{ img.url }}" loading="lazy" title="avatar">
+                        {% endthumbnail %}
+                    </div>
+                    <button id="btn-following" type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#exampleModal">
+                        {{ following.count }}
+                        <br>
+                        دنبال شونده ها
+                    </button>
+                    <button id="btn-followers" type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#exampleModal">
+                        {{ followers.count }}
+                        <br>
+                        دنبال کننده ها 
+                    </button>
+                    <button type="button" class="btn btn-outline-primary" disabled>
+                        {{ twittes.count }}
+                        <br>
+                        پست
+                    </button>
+                    <br>
+                    <div class="user-biography">
+                        <h4 class="user-info-name">
+                            {% if user.profile.first_name %}
+                                {{ user.profile.first_name }}
+                            {% endif %}
+                            {% if user.profile.last_name %}
+                                {{ user.profile.last_name }}
+                            {% endif %} 
+                        </h4>  
+                        <br>
+                        {% if user.profile.bio %}
+                                <h5 class="user-info-bio">{{ user.profile.bio }}</h5>
+                        {% endif %}
+                    </div>
+                </div>
+                          
+                <!-- Modal followers and following-->
+                <div class="modal fade text-left" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">{{ user.username }}</h5>
+                            <button type="button" style="position: absolute;left: 5px;" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body social-modal-content">
+                            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active" id="followers-tab" data-toggle="tab" href="#followers" role="tab" aria-controls="followers" aria-selected="true">
+                                        دنبال کننده ها
+                                    </a>
+                                </li>
+                                <li class="nav-item" style="margin:auto auto -2px auto;" >
+                                    <a class="nav-link" id="following-tab" data-toggle="tab" href="#following" role="tab" aria-controls="following" aria-selected="false">
+                                        دنبال شونده ها
+                                    </a>
+                                </li>
+                            </ul>
+                            <div class="tab-content" id="myTabContent">
+                                <div class="tab-pane fade show active" id="following" role="tabpanel" aria-labelledby="following-tab">
+                                    {% if following %}
+                                        <ul style="overflow-y: scroll;height: 200px;">
+                                        {% for item in following %}
+                                            <li>
+                                                <a href="{% url 'accounts:dashboard' item.to_user.username %}">
+                                                    <span>{{ item.to_user.username }}</span>
+                                                    {% thumbnail item.to_user.profile.avatar "100x100" crop="center" as img %}
+                                                        <img src="{{ img.url }}" loading="lazy" title="{{ item.to_user.username }} avatar">
+                                                    {% endthumbnail %}
+                                                </a>
+                                            </li>
+                                        {% endfor %}
+                                        </ul>
+                                    {% else %}
+                                        <br>
+                                        <h4 class="text-danger text-center">
+                                            مخاطبی وجود ندارد
+                                        </h4>
+                                        <br>
+                                    {% endif %}
+                                </div>
+                                <div class="tab-pane fade" id="followers" role="tabpanel" aria-labelledby="followers-tab">
+                                        {% if followers %}
+                                            <ul style="overflow-y: scroll;height: 200px;">
+                                            {% for follower in followers %}
+                                                <li>                                                
+                                                    <a href="{% url 'accounts:dashboard' follower.from_user.username %}">
+                                                        <span>{{ follower.from_user.username }}</span>
+                                                        {% thumbnail follower.from_user.profile.avatar "100x100" crop="center" as img %}
+                                                        <img src="{{ img.url }}" loading="lazy" title="{{ follower.from_user.username }} avatar">
+                                                        {% endthumbnail %}
+                                                    </a>
+                                                </li>
+                                            {% endfor %}
+                                            </ul>
+                                        {% else %}
+                                            <br>
+                                            <h4 class="text-danger text-center">
+                                                مخاطبی وجود ندارد
+                                            </h4>
+                                            <br>
+                                        {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer m-auto">
+                            <h3 style="color: tomato;">Benevis</h3>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+
+                <!-- modal change profile -->
+                <div class="modal fade" id="changeProfile" tabindex="-1" role="dialog" aria-labelledby="changeProfile" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="">ویرایش پروفایل</h5>
+                          <button type="button"  style="position: absolute;left: 5px;" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                        </div>
+                        <div class="modal-body text-right">
+                            <form action="{% url 'accounts:dashboard' user.username %}" method="post" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <div class="form-row">
+                                    <div class="form-group col-12">
+                                        <label for="">نام کاربری</label>
+                                        {{ Pform.username }}
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                        <label for="">نام</label>
+                                        {{ Pform.first_name }}
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label for="">نام خانوادگی</label>
+                                        {{ Pform.last_name }}
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                        <label for="">سن</label>
+                                        {{ Pform.age }}
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label for="">تلفن</label>
+                                        {{ Pform.phone }}
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-12">
+                                        <label for="">بیوگرافی</label>
+                                        {{ Pform.bio }}
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-sm-6">
+                                        <label for="">آواتار</label>
+                                        {{ Pform.avatar }}
+                                    </div>
+                                    <div class="form-group col-sm-6">
+                                        <label for="">تصویر کنونی</label><br>
+                                        {% thumbnail user.profile.avatar "100x100" crop="center" as img %}
+                                            <img loading="lazy" src="{{ img.url }}" title="avatar">
+                                        {% endthumbnail %}
+                                    </div>
+                                </div>
+                                <button type="button" id="submit-profile-edit" class="btn btn-primary">ذخیره تغییرات</button>
+                            </form>
+                        </div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>  
+    <div class="row justify-content-center mt-5">
+        <div class="col-12 text-center mt-3 mb-5">
+            {% if request.user.username == user.username %}
+                <button style="width:320px;" id="btn-new-twitte" type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#new-twitte-modal">
+                    توییت جدید
+                </button>
+                <!-- modal -->
+                <div class="modal fade" id="new-twitte-modal" tabindex="-1" role="dialog" aria-labelledby="new-twitte-modal" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="">توییت جدید</h5>
+                          <button type="button"  style="position: absolute;left: 5px;" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                        </div>
+                        <div class="modal-body text-right">
+                            <form action="{% url 'twitte:createTwitte' user.id %}" method="POST">
+                                {% csrf_token %}
+                                <textarea spellcheck="true" class="form-control" name="body" id="textarea-new-twitte"></textarea>
+                                <button type="submit" class="btn btn-success form-control mt-3">
+                                    پست
+                                </button>
+                            </form>
+                        </div>
+                      </div>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+        {% for twitte in twittes %}
+        <div class="col-12 col-lg-6 mt-3">
+            <div class="content">
+                <div class="twitte-card" style="border-radius: 6px;">
+                    <div class="card-header">
+                        {% thumbnail twitte.user.profile.avatar "100x100" crop="center" as img %}
+                            <img class="card-image" src="{% if img.url %}{{ img.url }}{% endif %}" title="avatar">
+                        {% endthumbnail %}
+                        <div class="card-info" style="direction: ltr;">
+                            <span class="card-fname">
+                                {% if twitte.user.profile.first_name %}
+                                    {{ twitte.user.profile.first_name }} 
+                                {% endif %}
+                            </span>
+                            <br>
+                            <a class="card-username" href="{% url 'accounts:dashboard' twitte.user.username %}">
+                                <span >@{{ twitte.user.username }}</span>
+                            </a>
+                        </div>
+                        {% if request.user == twitte.user %}
+                            <a class="more-for-father" title="delete" href="#delete-twitte-modal" data-toggle="modal" data-target="#delete-twitte-modal">
+                                <i class="fa fa-ellipsis-h"></i>
+                            </a>
+
+                            <!-- modal -->
+                            <div class="modal fade" id="delete-twitte-modal" tabindex="-1" role="dialog" aria-labelledby="delete-twitte-modal" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                    <h5 class="modal-title">حذف توییت</h5>
+                                    <button type="button"  style="position: absolute;left: 5px;" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                    </div>
+                                    <div class="modal-body text-right">
+                                        <a href="{% url 'twitte:deleteTwitte' twitte.user.id twitte.pk %}" class="text-white btn btn-danger">حذف</a>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <a class="body-text-content" href="{{ twitte.get_absolute_url }}" style="color: #000;">
+                        <div class="card-body">
+                        <p class="card-body-paragraph" style="direction:ltr">
+                                {{ twitte.body }}
+                            </p>
+                            <span class="text-left" style="direction: ltr;display:block;"><time datetime="{{ twitte.date }}">{{ twitte.created|timesince}}</time></span>
+                        </div>
+                    </a>
+                    <div class="card-footer" style="direction:ltr">
+                        <div class="comment">
+                            <i class="fa fa-comments"></i>
+                            <span>{{ twitte.tTwitte.count }}</span>
+                        </div>
+                        <div class="like">
+                            <i data-twitte-id="{{ twitte.pk }}" data-can-like="{{ twitte.can_like }}" class="fa fa-heart {% if not twitte.can_like %}red{% endif %}"></i>
+                            <span>{{ twitte.like_count }}</span>
+                        </div>
+                        <div class="share">
+                            <i class="fa fa-share-square"></i>
+                            <span></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+<script>
+    $(".home-link").removeClass("active");
+    $(".dashboard-link").addClass("active");
+</script>
+<script src="{% static 'accounts/js/script.js' %}"></script>
+<script src="{% static 'js/index.js' %}"></script>
+
+{% endblock body %}

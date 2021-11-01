@@ -1,0 +1,85 @@
+{% extends "parent/parent.html" %}
+{% load static %}
+
+{% block title %}Login | Register{% endblock title %}
+
+{% block header %}
+  <link rel="stylesheet" href="{% static 'accounts/css/accstyles.css' %}?{% now 'U' %}">
+{% endblock header %}
+{% block body %}
+
+<div class="my-container-form mb-5">
+    <div class="form-container sign-up-container">
+        <form action="{% url 'accounts:register' %}" method="POST">
+            <h1>عضویت</h1>
+            {% csrf_token %}
+            {% if form2 %}
+                {{ form2.as_p }}
+            {% endif %}
+            <div class="g-recaptcha" data-sitekey="6LdO_JwcAAAAAPQ4UPYwpNyvzm8VRm5J9UwPckgo"></div>
+
+            <button class="btn-reg">عضویت</button>
+        </form>                
+    </div>
+    <div class="form-container sign-in-container">
+        <form action="{% url 'accounts:login' %}" method="POST">
+            <h1 class="mb-2">ورود</h1>
+            <div class="social-container">
+                <a href="{% url 'social:begin' 'google-oauth2' %}">گوگل</a>
+            </div>
+            <span>یا</span>
+            {% csrf_token %}
+            {% if form1 %}
+                {{ form1.as_p }}
+            {% endif %}
+            
+            <div class="g-recaptcha-outer">
+                <div class="g-recaptcha-inner">
+                    <div class="g-recaptcha" data-sitekey="6LdO_JwcAAAAAPQ4UPYwpNyvzm8VRm5J9UwPckgo"></div>
+                </div>
+            </div>
+            
+            <a href="#">فراموشی کلمه عبور</a>
+            <button class="btn-login">ورود</button>
+        </form>
+    </div>
+    <div class="overlay-container">
+        <div class="overlay">
+            <div class="overlay-panel overlay-left">
+                <h1 class="mb-2">
+                    خوش برگشتید
+                </h1>
+                <p>
+                    برای دسترسی به تمام امکانات ابتدا وارد شودید
+                </p>
+                <button class="ghost" id="signIn">ورود</button>
+            </div>
+            <div class="overlay-panel overlay-right">
+                <h1>
+                    خوش آمدید
+                </h1>
+                <p>
+                    اگر عضو نیستید میتوانید در کمتر از 1 دقیقه عضو شوید
+                </p>
+                <button class="ghost" id="signUp">عضویت</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function(){
+        $("#signUp").click(function(){
+            $(".my-container-form").addClass("right-panel-active");
+            $(".sign-up-container").css({"opacity" : "1", "z-index" : "3", "transform" : "translateX(100%)"})
+        });
+        $("#signIn").click(function(){
+            $(".my-container-form").removeClass("right-panel-active");
+            $(".sign-up-container").css({"z-index" : "2","transform" : "translateX(-5%)"})
+        });
+
+        $("#rc-anchor-container").addClass('fixed-recaptcha-container');
+    });
+    
+</script>
+{% endblock body %}

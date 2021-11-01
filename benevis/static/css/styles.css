@@ -1,0 +1,386 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing : border-box;
+}
+
+body{
+    background-color: #eee;
+    overflow-x: hidden;
+    min-height: 100vh;
+    user-select: none;
+}
+
+a{
+    text-decoration : none
+}
+a:hover{
+    text-decoration : none
+}
+@media (max-width: 722px) {
+    .container {
+       width: 100%;
+    }
+}
+
+/* dashboard page */
+.avatar-card{
+    display : inline;
+}
+.avatar-card img{    
+    border-radius: 50%;
+    width: 68px;
+    margin-right: 30px;
+}
+div.social-modal-content ul{
+    padding : 0 20px
+}
+div.social-modal-content ul li{
+    list-style-type: none !important;
+    margin:auto auto -11px auto !important;
+    padding: 10px
+}
+div.social-modal-content ul li a img{
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit : cover;
+}
+
+div.social-modal-content ul li a span{
+    margin-left: 15px;
+    vertical-align: -5px;
+    font-size: 18px;
+}
+
+/* device 14.6 */
+@media screen and (max-width:443px) {
+    h1.dashboard-title{
+        font-size: 25px !important;
+    }
+    button.btn{
+        font-size : 11px !important;
+    }
+    .avatar-card img{
+        margin-right: 8px !important;
+    }
+    button.edit-profile{
+        vertical-align: 3px;
+    }
+    li.nav-item{
+        font-size: 8px;
+    }
+    div.social-modal-content ul li a img{
+        width: 40px !important;
+        height: 40px !important;
+    }
+    div.social-modal-content ul li a span{
+        font-size: 14px !important; 
+    }
+    .modal-footer h3{
+        font-size: 16px;
+    }
+}
+
+/* responsive iphone 5s */
+@media screen and (max-width:320px) {
+    h1.dashboard-title{
+        font-size: 21px !important;
+    }
+    button.btn{
+        font-size : 7px !important;
+    }
+}
+
+.user-biography{
+    text-align: left;
+    position: absolute;
+    right: 44%;
+    top: 96px;
+}
+.user-biography h4.user-info-name{
+    font-size: 25px;
+    font-weight: bolder !important;
+    font-style: oblique !important;
+    display: inline;
+    white-space : nowrap;
+}
+.user-biography h5.user-info-bio{
+    font-size: 16px;
+    margin-right: 70px;
+    margin-top: 15px;
+    display: inline-block;
+    white-space : nowrap;
+}
+
+#btn-new-twitte{
+    margin-top : 75px;  
+}
+
+@media screen and (max-width:443px) {
+    .user-biography{
+        right: 100px;
+    }
+    .user-biography h4.user-info-name{
+        font-size : 16px;
+    }
+    .user-biography h5.user-info-bio{
+        font-size : 14px;
+    }
+    #btn-new-twitte{
+        width : 280x;  
+    }
+}
+
+/* responsive iphone 5s */
+@media screen and (max-width:320px) {
+    .user-biography{
+        right: 47px;
+    }
+}
+/* profile edit */
+
+#changeProfile textarea {
+    height: 90px;
+}
+
+#changeProfile img{
+    border-radius: 50%;
+    text-align: left;
+    margin-right: 70px;
+}
+
+#changeProfile button{
+    font-size: 15px !important;
+}
+
+
+/* progress cover */
+
+.progres-cover{
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+    width: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    display : flex;
+    justify-content: center;
+    align-items: center;
+    direction: ltr;
+    display : none;
+    z-index: 99999999999999 !important;
+}
+.progres-cover h2{
+    text-align : center;
+    color: #fff;
+}
+
+/* twitte card */
+.twitte-card{
+    background-color : #fff;
+    box-shadow: 0 0 5px -2px #000;
+}
+.card-header{
+    height: 100px;    
+    position: relative;  
+}
+.twitte-card .card-header img{
+    border-radius: 50%;
+    width: 75px;
+    height: 75px;
+    float: left;
+    box-shadow: 0 0 5px -2px #000;
+
+}
+.twitte-card .card-header span{
+    margin-left: 20px;
+}
+.twitte-card .card-header span.card-fname{
+    font-size: 20px;
+    letter-spacing: 1px;
+    font-weight:700;
+}
+.twitte-card .card-header a.card-username{
+    font-style: italic;
+    font-size: 15px;
+}
+.twitte-card .card-body{
+    padding: 10px 30px 0 30px;
+}
+.twitte-card .card-body p.card-body-paragraph{
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.625;
+    align-items: justify;
+}
+.card-header a.more-for-father{
+    position: absolute;
+    right: 25px;
+    color: #000;
+    font-size: 23px;
+    top: 5px;
+}
+.card-body span time{
+    color: #8b8b8b;
+    font-size: 13px;
+}
+.card-footer{
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+.card-footer div{
+    margin : auto 50px; 
+    position: relative;
+}
+.card-footer div i{
+    font-size : 20px
+}
+.card-footer div span{
+    position: absolute;
+    left: 25px;
+    top: 0;
+}
+.red{
+    color : red !important;
+}
+.like, .comment, .share{
+    cursor : pointer;
+}
+.share{
+    transition: 0.5s color linear;
+}
+.share:hover i{
+    color : #0b1af4;
+}
+
+/* comments */
+.comments{
+    box-shadow : 0px 0px 5px -2px #000;
+}
+.comment-card{
+    margin : 20px;
+    direction: ltr;
+}
+.comment-content img{
+    border-radius: 50%;
+    float: left;
+}
+.comment-content a{
+    vertical-align: 6px;
+    margin-left: 10px;
+    font-size : 16px;
+}
+.comment-content p {
+    margin-left: 27px;
+    position: relative;
+    left: 11px;
+    bottom: 6px;
+    font-size : 16px
+}
+.comment-content .content{
+    transition: .1s linear;    
+    padding: 8px;
+    border-radius : 10px;
+}
+.comment-content .content:hover{
+    background: #eee;
+}
+
+/* responsive login page */
+@media screen and (max-width:705px) {
+    body{
+        overflow-x : hidden;
+    }
+    .body-wrapper{
+        margin: 0 !important;
+    }
+    /* .my-pure-nav{
+        display : none;
+    } */
+    .my-container-form{
+        overflow : scroll !important;   
+        width: 330px !important;
+    }
+    .overlay-container{
+        display: none !important;
+    }
+    .sign-in-container{
+        width: 100% !important;
+        z-index: 3 !important;
+    }
+    .sign-up-container{
+        width: 100% !important;
+        z-index: 5 !important;
+        opacity: 1 !important;
+        top: 100% !important;
+    }
+}
+/* small device nav */
+.small-device-nav{
+    position : absolute;
+    position:fixed  ;
+    top: 0;
+    right: -100%;
+    height : 100vh;
+    z-index : 9999 !important;
+    background : linear-gradient(315deg, #537895 0%, #09203f 74%);
+    width : 280px;
+    transition: right .7s ease-in-out;
+}
+.make-right-0{
+    right: 0 !important;
+}
+.make-body-none{
+    overflow: hidden;
+}
+.small-device-nav .my-nav-wrapper .avatar{
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    border: 1px solid #eee;
+    margin: 25px auto;
+    overflow: hidden;
+}
+.small-device-nav .my-nav-wrapper .title{
+    text-align: center;
+    font-size: 29px;
+    color: #bfdbff;
+}
+
+.close-nav{
+    position:absolute;
+    top : 0;
+    left : 10px;
+    color: #ccc;
+    font-size : 30px;
+    cursor: pointer;
+}
+.small-device-nav .my-nav-wrapper  main ul{
+    direction: ltr;
+    list-style-type : none;
+    text-align : right;
+    margin-right : 30px;
+}
+
+.small-device-nav .my-nav-wrapper  main ul li {
+    line-height: 45px;
+    color: #eee;
+    width: 100%;
+}
+.small-device-nav .my-nav-wrapper  main ul li  a{
+    margin-right: 10px;
+    vertical-align: 1px;
+    color: #bfdbff;
+}
+.small-device-nav .my-nav-wrapper  main ul li  a:hover{
+    color: #fff;
+}
+.small-device-nav .my-nav-wrapper  main ul li:hover i{
+    color : yellow;
+}

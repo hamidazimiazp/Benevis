@@ -1,0 +1,131 @@
+{% extends "parent/parent.html" %}
+{% load static %}
+{% load thumbnail %}
+{% load basefilter %}
+{% block title %}{{ super }}Home{% endblock title %}
+{% block header %}
+{% csrf_token %}
+{% endblock header %}
+{% block body %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-12 col-lg-10 mt-3 twitte-wrapper">
+            <div class="content">
+                <div class="twitte-card" style="border-radius: 6px;">
+                    <div class="card-header">
+                        {% thumbnail twitte.user.profile.avatar "100x100" crop="center" as img %}
+                            <img class="card-image" src="{{ img.url }}" title="avatar">
+                        {% endthumbnail %}
+                        <div class="card-info" style="direction: ltr;">
+                            <span class="card-fname">
+                                {% if twitte.user.profile.first_name %}
+                                    {{ twitte.user.profile.first_name }} 
+                                {% endif %}
+                            </span>
+                            <br>
+                            <a class="card-username" href="{% url 'accounts:dashboard' twitte.user.username %}">
+                                <span >@{{ twitte.user.username }}</span>
+                            </a>
+                        </div>
+                        {% if request.user == twitte.user %}
+                            <a class="more-for-father" title="delete" href="#delete-twitte-modal" data-toggle="modal" data-target="#delete-twitte-modal">
+                                <i class="fa fa-ellipsis-h"></i>
+                            </a>
+
+                            <!-- modal -->
+                            <div class="modal fade" id="delete-twitte-modal" tabindex="-1" role="dialog" aria-labelledby="delete-twitte-modal" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                    <h5 class="modal-title">حذف توییت</h5>
+                                    <button  type="button"  style="position: absolute;left: 5px;" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                    </div>
+                                    <div class="modal-body text-right">
+                                        <a href="{% url 'twitte:deleteTwitte' twitte.user.id twitte.pk %}" class="text-white btn btn-danger">حذف</a>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <a class="body-text-content" href="{{ twitte.get_absolute_url }}" style="color: #000;">
+                        <div class="card-body">
+                        <p class="card-body card-body-paragraph" style="direction:ltr">
+                                {{ twitte.body }}
+                            </p>
+                            <span class="text-left" style="direction: ltr;display:block;"><time datetime="{{ twitte.date }}">{{ twitte.created|timesince}}</time></span>
+                        </div>
+                    </a>
+                    <div class="card-footer" style="direction:ltr">
+                        <div class="comment">
+                            <i class="fa fa-comments"></i>
+                            <span>{{ twitte.tTwitte.count }}</span>
+                        </div>
+                        <div class="like">
+                            <i data-twitte-id="{{ twitte.pk }}" data-can-like="{{ twitte.can_like }}" class="fa fa-heart {% if not twitte.can_like %}red{% endif %}"></i>
+                            <span>{{ twitte.like_count }}</span>
+                        </div>
+                        <div class="share">
+                            <i class="fa fa-share-square"></i>
+                            <span></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-12 col-lg-10 mt-3 ">
+            <div class="comments content bg-white p-3">
+                <button data-toggle="modal" data-target="#new-comment-modal" style="width: 150px;height: 46px;" class='btn btn-outline-primary float-right'>کامنت</button>
+                <!-- modal -->
+                <div class="modal fade" id="new-comment-modal" tabindex="-1" role="dialog" aria-labelledby="new-comment-modal" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="">کامنت جدید</h5>
+                          <button type="button"  style="position: absolute;left: 5px;" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                        </div>
+                        <div class="modal-body text-right">
+                            <form action="{% url 'twitte:createComment' twitte.id %}" method="POST">
+                                {% csrf_token %}
+                                <textarea spellcheck="true" class="form-control" name="body" id="textarea-new-comment"></textarea>
+                                <button type="submit" class="btn btn-success form-control mt-3">
+                                    ارسال کامنت
+                                </button>
+                            </form>
+                        </div>
+                      </div>
+                    </div>
+                </div>
+                {% if comments %}
+                    {% for comment in comments %}
+                        <div class="comment-card">
+                            <div class="comment-content">
+                                <div class="content">
+                                    {% thumbnail comment.user.profile.avatar "100x100" crop="center" as img %}
+                                    <img class="card-image" width="50px" height="50px" loading="lazy" src="{{ img.url }}" title="avatar">
+                                    {% endthumbnail %}
+                                    <a href="{% url 'accounts:dashboard' comment.user.username %}">{{ comment.user.username }}</a>
+                                    <p>{{ comment.body }}</p>
+                                </div>
+                                <hr>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p class="text-center">...</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(".home-link").removeClass("active");
+</script>
+<script src="{% static 'js/index.js' %}"></script>
+{% endblock body %}

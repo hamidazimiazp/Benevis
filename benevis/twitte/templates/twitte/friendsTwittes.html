@@ -1,0 +1,88 @@
+{% extends "parent/parent.html" %}
+{% load static %}
+{% load thumbnail %}
+{% load basefilter %}
+{% block title %}{{ super }}Friends{% endblock title %}
+{% block header %}
+{% csrf_token %}
+{% endblock header %}
+{% block body %}
+<div class="container mt-5">
+    <div class="row justify-content-center text-center mt-5">
+        <div class="col-6">
+            <h1 style="font-size: 30px;">
+                 دوستان شما
+            </h1>
+        </div>
+    </div>
+    {% if twittes %}
+        <div class="row infinite-container justify-content-center mt-5 mb-5" style="direction: ltr;">
+        {% for twitte in twittes %}            
+            <div class="col-12 col-lg-6 mt-3 infinite-item twitte-wrapper">
+                <div class="content">
+                    <div class="twitte-card" style="border-radius: 6px;">
+                        <div class="card-header">
+                            {% thumbnail twitte.user.profile.avatar "100x100" crop="center" as img %}
+                                <img class="card-image" loading="lazy" src="{{ img.url }}" title="avatar">
+                            {% endthumbnail %}
+                            <div class="card-info">
+                                <span class="card-fname">
+                                    {% if twitte.user.profile.first_name %}
+                                        {{ twitte.user.profile.first_name }} 
+                                    {% endif %}
+                                </span>
+                                <br>
+                                <a class="card-username" href="{% url 'accounts:dashboard' twitte.user.username %}">
+                                    <span >@{{ twitte.user.username }}</span>
+                                </a>
+                            </div>
+                        </div>
+                        <a class="body-text-content" href="{{ twitte.get_absolute_url }}" style="color: #000;">
+                            <div class="card-body">
+                                <p class="card-body-paragraph" style="direction:ltr">
+                                    {{ twitte.body }}
+                                </p>
+                                <span class="text-left" style="direction: ltr;display:block;"><time datetime="{{ twitte.date }}">{{ twitte.created|timesince}}</time></span>
+                            </div>
+                        </a>
+                        <div class="card-footer" style="direction:ltr">
+                                <div class="comment">
+                                    <i class="fa fa-comments"></i>
+                                    <span>{{ twitte.tTwitte.count }}</span>
+                                </div>
+                                <div class="like">
+                                    <i data-twitte-id="{{ twitte.pk }}" data-can-like="{{ twitte.can_like }}" class="fa fa-heart {% if not twitte.can_like %}red{% endif %}"></i>
+                                    <span>{{ twitte.like_count }}</span>
+                                </div>
+                                <div class="share">
+                                    <i class="fa fa-share-square"></i>
+                                </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+        </div>
+        <div class="d-flex d-none text-center" style="top:35vh;left:46vw; direction:ltr">
+            <button class="btn btn-primary loading" style="display: none;margin: auto auto 20px auto;">
+                <span class="spinner-border spinner-border-sm"></span>
+                Please wait...
+            </button>
+        </div>
+        <div class="row d-none">
+            <div class="col-12">
+                {% if page_obj.has_next %}
+                    <a class="infinite-more-link" href="?page={{ page_obj.next_page_number }}">next</a>
+                {% endif %}
+                </span>
+            </div>
+        </div>
+    {% endif %}
+</div>
+<script>
+    $(".home-link").removeClass("active");
+    $(".friends-link").addClass("active");
+</script>
+<script src="{% static 'js/index.js' %}"></script>
+
+{% endblock body %}
